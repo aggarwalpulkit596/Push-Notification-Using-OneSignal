@@ -38,7 +38,7 @@ public class NotificationData extends AppCompatActivity {
                 imageView.setVisibility(View.GONE);
             }
             else{
-                Picasso.with(this).load(b.get("image_url").toString()).into(imageView);
+                Picasso.with(this).load(b.get("image_url").toString()).placeholder(R.drawable.load).into(imageView);
 
             }
         }
