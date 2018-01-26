@@ -21,7 +21,7 @@ public interface notificationDao {
     int getCount();
 
     @Insert
-    void addtolist(Messages messages);
+    long addtolist(Messages messages);
 
     @Delete
     void deletefromlist(Messages messages);

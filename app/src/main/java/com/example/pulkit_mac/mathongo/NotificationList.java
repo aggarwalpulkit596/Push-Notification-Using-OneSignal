@@ -50,7 +50,7 @@ public class NotificationList extends AppCompatActivity {
             protected void onPostExecute(List<Messages> messages) {
                 mList.clear();
                 mList.addAll(messages);
-                Log.i("TAG1234", "onPostExecute: "+messages);
+                Log.i("TAG1234", "onPostExecute: " + messages);
                 mNotificationAdapter.notifyDataSetChanged();
 
             }
@@ -59,7 +59,7 @@ public class NotificationList extends AppCompatActivity {
         mNotificationAdapter = new NotificationAdapter(this, mList, new NotificationAdapter.NotificationListener() {
             @Override
             public void onItemClick(View view, final int position) {
-                new AsyncTask<Void,Void,Void>(){
+                new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         dao.updateseen(mList.get(position).getId());
@@ -68,11 +68,11 @@ public class NotificationList extends AppCompatActivity {
 
                     @Override
                     protected void onPostExecute(Void aVoid) {
-                        Intent i = new Intent(NotificationList.this,NotificationData.class);
-                        i.putExtra("title",mList.get(position).getTitle());
-                        i.putExtra("message",mList.get(position).getMessage());
-                        if(mList.get(position).getImg_url()!= null )
-                            i.putExtra("image_url",mList.get(position).getImg_url());
+                        Intent i = new Intent(NotificationList.this, NotificationData.class);
+                        i.putExtra("title", mList.get(position).getTitle());
+                        i.putExtra("message", mList.get(position).getMessage());
+                        if (mList.get(position).getImg_url() != null)
+                            i.putExtra("image_url", mList.get(position).getImg_url());
                         startActivity(i);
                     }
                 }.execute();
@@ -81,6 +81,11 @@ public class NotificationList extends AppCompatActivity {
         });
         mNotificationList.setAdapter(mNotificationAdapter);
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNotificationAdapter.notifyDataSetChanged();
     }
 }

@@ -35,12 +35,6 @@ public class Main2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         nd = NotificationDatabase.getInstance(this);
         dao = nd.notificationDao();
-        if (getIntent().getExtras() != null) {
-            Log.i("TAG123456", "onCreate: "+getIntent().getExtras().containsKey("title"));
-            if(
-                    getIntent().getExtras().containsKey("title"))
-            getdata();
-        }
         IntentFilter filter = new IntentFilter();
 
         filter.addAction("com.hello.action");
@@ -54,45 +48,6 @@ public class Main2Activity extends AppCompatActivity {
         };
         registerReceiver(updateUIReciver, filter);
 
-    }
-
-    private void getdata() {
-
-        for (String key : getIntent().getExtras().keySet()) {
-
-            if (key.equals("title"))
-                title = getIntent().getExtras().getString("title");
-            else if (key.equals("message"))
-                message = getIntent().getExtras().getString("message");
-            else if (key.equals("image_url"))
-                image = getIntent().getExtras().getString("image_url");
-        }
-        if (image == null)
-            messages = new Messages(title, message, false);
-        else
-            messages = new Messages(title, message, false, image);
-
-        addtodatabase();
-
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void addtodatabase() {
-
-        new AsyncTask<Void, Void, Void>() {
-
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                dao.addtolist(messages);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                invalidateCart();
-            }
-        }.execute();
     }
 
 
