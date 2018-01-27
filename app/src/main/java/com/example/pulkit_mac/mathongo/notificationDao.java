@@ -14,8 +14,13 @@ import java.util.List;
 public interface notificationDao {
 
 
-    @Query("SELECT * FROM notifications")
+    @Query("SELECT * FROM notifications WHERE img_url is not null")
     List<Messages> getAllNotification();
+
+    @Query("SELECT * FROM notifications WHERE img_url is  null")
+    List<Messages> getAlltextNotification();
+
+
 
     @Query("SELECT COUNT(id) FROM notifications WHERE seen = 0")
     int getCount();

@@ -50,7 +50,7 @@ public class TextFragment extends Fragment {
 
             @Override
             protected List<Messages> doInBackground(Void... voids) {
-                return dao.getAllNotification();
+                return dao.getAlltextNotification();
             }
 
             @Override
@@ -88,4 +88,8 @@ public class TextFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

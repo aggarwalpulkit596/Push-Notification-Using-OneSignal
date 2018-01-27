@@ -8,8 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fragment_background"
-        android:layout_margin="15dp"
-        android:padding="20dp">
+        android:layout_margin="15dp">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/picturelist" />
     </RelativeLayout>
 
 </FrameLayout>
