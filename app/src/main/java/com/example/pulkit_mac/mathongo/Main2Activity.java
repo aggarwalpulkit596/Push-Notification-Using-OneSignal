@@ -31,6 +31,7 @@ public class Main2Activity extends AppCompatActivity {
     int itemcount;
     BroadcastReceiver updateUIReciver;
     IntentFilter filter;
+    TextView textView;
 
 
     @Override
@@ -39,6 +40,7 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        textView = findViewById(R.id.textView2);
         setSupportActionBar(toolbar);
         setTitle("Push Notifications");
         nd = NotificationDatabase.getInstance(this);
@@ -76,6 +78,7 @@ public class Main2Activity extends AppCompatActivity {
             protected void onPostExecute(Integer count) {
                 itemcount = count;
                 menuItem.setIcon(buildCounterDrawable(itemcount, getDrawable(R.drawable.notification)));
+                textView.setText("You have "+count+" unread Notifications");
 
             }
         }.execute();

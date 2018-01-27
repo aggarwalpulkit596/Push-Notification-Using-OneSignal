@@ -2,7 +2,10 @@ package com.example.pulkit_mac.mathongo;
 
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +27,8 @@ public class TextFragment extends Fragment {
     RecyclerView mNotificationList;
     NotificationAdapter mNotificationAdapter;
     List<Messages> mList = new ArrayList<>();
+    BroadcastReceiver updateUIReciver;
+    IntentFilter filter;
 
 
     public TextFragment() {
@@ -41,6 +46,17 @@ public class TextFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mNotificationList.setLayoutManager(linearLayoutManager);
         mNotificationList.setHasFixedSize(true);
+        filter = new IntentFilter();
+
+        filter.addAction("com.hello.action");
+
+        updateUIReciver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mNotificationAdapter.notifyDataSetChanged();
+            }
+        };
 
 
         NotificationDatabase nd = NotificationDatabase.getInstance(getContext());
@@ -91,5 +107,12 @@ public class TextFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().registerReceiver(updateUIReciver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(updateUIReciver);
     }
 }

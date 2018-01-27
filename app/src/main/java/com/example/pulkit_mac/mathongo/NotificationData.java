@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 public class NotificationData extends AppCompatActivity {
 
-    TextView title,message;
+    TextView title, message;
     ImageView imageView;
     private Toolbar mToolbar;
 
@@ -21,27 +21,23 @@ public class NotificationData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_data);
-        mToolbar = findViewById(R.id.toolbardata);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Notification");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         title = findViewById(R.id.textViewtitle);
         message = findViewById(R.id.textViewmessage);
         imageView = findViewById(R.id.imageView);
 
         Bundle b = getIntent().getExtras();
-        if(b != null){
+        if (b != null) {
             title.setText(b.get("title").toString());
             message.setText(b.get("message").toString());
-            if(b.get("image_url") == null){
+            if (b.get("image_url") == null) {
                 imageView.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 Picasso.with(this).load(b.get("image_url").toString()).placeholder(R.drawable.load).into(imageView);
 
             }
         }
-
     }
 }
+
