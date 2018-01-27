@@ -5,6 +5,5 @@
         android:id="@+id/action_shop"
         android:orderInCategory="100"
         android:title="Notifications"
-        android:icon="@drawable/notification"
         app:showAsAction="ifRoom" />
 </menu>

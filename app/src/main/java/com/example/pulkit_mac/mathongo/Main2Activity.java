@@ -9,8 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,33 +28,37 @@ public class Main2Activity extends AppCompatActivity {
     NotificationDatabase nd;
     notificationDao dao;
     Messages messages;
-    String title, message, image;
+    int itemcount;
+    BroadcastReceiver updateUIReciver;
+    IntentFilter filter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         nd = NotificationDatabase.getInstance(this);
         dao = nd.notificationDao();
-        IntentFilter filter = new IntentFilter();
+        filter = new IntentFilter();
 
         filter.addAction("com.hello.action");
 
-        BroadcastReceiver updateUIReciver = new BroadcastReceiver() {
+       updateUIReciver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
                 invalidateCart();
             }
         };
-        registerReceiver(updateUIReciver, filter);
+
 
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,9 +73,12 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Integer count) {
-                menuItem.setIcon(buildCounterDrawable(count, R.drawable.notification));
+                itemcount = count;
+                menuItem.setIcon(buildCounterDrawable(itemcount, getDrawable(R.drawable.notification)));
+
             }
         }.execute();
+
         return true;
     }
 
@@ -83,10 +94,10 @@ public class Main2Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private Drawable buildCounterDrawable(int count, int backgroundImageId) {
+    private Drawable buildCounterDrawable(int count, Drawable backgroundImageId) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.notification_layout, null);
-        view.setBackgroundResource(backgroundImageId);
+        view.setBackground(backgroundImageId);
 
         if (count == 0) {
             View counterTextPanel = view.findViewById(R.id.counterValuePanel);
@@ -116,6 +127,18 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(updateUIReciver, filter);
         invalidateCart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(updateUIReciver);
     }
 }

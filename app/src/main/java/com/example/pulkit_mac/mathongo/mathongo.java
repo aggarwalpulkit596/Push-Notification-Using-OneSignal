@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import com.onesignal.OSNotification;
@@ -55,6 +56,9 @@ public class mathongo extends Application {
             addtodatabase();
 
         }
+    }
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     private class ExampleNotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
