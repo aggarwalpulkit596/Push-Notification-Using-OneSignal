@@ -40,6 +40,7 @@ public class Main2Activity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Push Notifications");
         nd = NotificationDatabase.getInstance(this);
         dao = nd.notificationDao();
         filter = new IntentFilter();
