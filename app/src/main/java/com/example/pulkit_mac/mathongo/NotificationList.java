@@ -1,7 +1,10 @@
 package com.example.pulkit_mac.mathongo;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -20,14 +23,13 @@ import java.util.List;
 
 public class NotificationList extends AppCompatActivity {
 
-//    RecyclerView mNotificationList;
-//    NotificationAdapter mNotificationAdapter;
-//    private Toolbar mToolbar;
-//    List<Messages> mList = new ArrayList<>();
+
 
     TextView textlabel, picturelabel;
     ViewPager mMainPager;
     private PagerViewAdapter mPagerViewdapter;
+    BroadcastReceiver updateUIReciver;
+    IntentFilter filter;
 
 
     @SuppressLint("StaticFieldLeak")
@@ -39,7 +41,20 @@ public class NotificationList extends AppCompatActivity {
         textlabel = findViewById(R.id.textlabel);
         picturelabel = findViewById(R.id.picturelabel);
         mMainPager = findViewById(R.id.mainPager);
+        filter = new IntentFilter();
 
+        filter.addAction("com.hello.action");
+
+        updateUIReciver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        };
         viewpager();
     }
 
@@ -107,4 +122,18 @@ public class NotificationList extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(updateUIReciver, filter);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(updateUIReciver);
+    }
+
 }
