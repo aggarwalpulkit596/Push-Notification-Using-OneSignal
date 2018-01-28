@@ -4,4 +4,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="this_activity_open_when_example_2_is_passed_as_parameter_in_data">This Activity Open When example 2 is passed as parameter in data</string>
+    <string name="this_activity_open_when_example_1_is_passed_as_parameter_in_data">This Activity Open When example 1 is passed as parameter in data</string>
 </resources>

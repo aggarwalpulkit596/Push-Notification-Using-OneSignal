@@ -69,7 +69,15 @@ public class mathongo extends Application {
         @SuppressLint("StaticFieldLeak")
         @Override
         public void notificationOpened(OSNotificationOpenResult result) {
-            final Intent resultIntent = new Intent(getApplicationContext(), NotificationData.class);
+            JSONObject data = result.notification.payload.additionalData;
+            String customKey = null;
+            if (data != null) {
+                customKey = data.optString("intent", null);
+
+                if (customKey != null)
+                    Log.i("OneSignalExample", "customkey set with value: " + customKey);
+            }
+            final Intent resultIntent = new Intent(customKey);
             resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
             resultIntent.putExtra("title", title);
             resultIntent.putExtra("message", body);

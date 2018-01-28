@@ -2,24 +2,21 @@ package com.example.pulkit_mac.mathongo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class NotificationData extends AppCompatActivity {
+public class Example1 extends AppCompatActivity {
 
     TextView title, message;
     ImageView imageView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification_data);
+        setContentView(R.layout.activity_example1);
 
 
         title = findViewById(R.id.textViewtitle);
@@ -39,4 +36,3 @@ public class NotificationData extends AppCompatActivity {
         }
     }
 }
-
