@@ -2,6 +2,8 @@ package com.example.pulkit_mac.mathongo;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatDelegate;
@@ -36,8 +38,10 @@ public class mathongo extends Application {
                 .setNotificationOpenedHandler(new ExampleNotificationOpenedHandler())
                 .init();
         Log.i("TAG", "onCreate: here it is");
-
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
+
 
     private class ExampleNotificationReceivedHandler implements OneSignal.NotificationReceivedHandler {
         @Override

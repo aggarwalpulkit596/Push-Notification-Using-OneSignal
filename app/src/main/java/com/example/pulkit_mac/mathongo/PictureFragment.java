@@ -21,6 +21,8 @@ public class PictureFragment extends Fragment {
     RecyclerView mNotificationList;
     NotificationAdapter mNotificationAdapter;
     List<Messages> mList = new ArrayList<>();
+    notificationDao dao;
+    NotificationDatabase nd;
 
 
     public PictureFragment() {
@@ -41,8 +43,8 @@ public class PictureFragment extends Fragment {
         mNotificationList.setHasFixedSize(true);
 
 
-        NotificationDatabase nd = NotificationDatabase.getInstance(getContext());
-        final notificationDao dao = nd.notificationDao();
+        nd = NotificationDatabase.getInstance(getContext());
+        dao = nd.notificationDao();
         new AsyncTask<Void, Void, List<Messages>>() {
 
 
@@ -86,5 +88,26 @@ public class PictureFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void onResume() {
+        super.onResume();
+        new AsyncTask<Void, Void, List<Messages>>() {
 
+
+            @Override
+            protected List<Messages> doInBackground(Void... voids) {
+                return dao.getAllNotification();
+            }
+
+            @Override
+            protected void onPostExecute(List<Messages> messages) {
+                mList.clear();
+                mList.addAll(messages);
+                mNotificationAdapter.setData(messages);
+                mNotificationAdapter.notifyDataSetChanged();
+
+            }
+        }.execute();
+    }
 }

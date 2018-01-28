@@ -22,8 +22,14 @@ public interface notificationDao {
 
 
 
-    @Query("SELECT COUNT(id) FROM notifications WHERE seen = 0")
+    @Query("SELECT COUNT(id) FROM notifications WHERE seen = 0 ")
     int getCount();
+
+    @Query("SELECT COUNT(id) FROM notifications WHERE seen = 0 AND img_url is null")
+    int gettextCount();
+
+    @Query("SELECT COUNT(id) FROM notifications WHERE seen = 0 AND img_url is not null")
+    int getimageCount();
 
     @Insert
     long addtolist(Messages messages);

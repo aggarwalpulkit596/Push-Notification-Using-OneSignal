@@ -134,8 +134,6 @@ public class Main2Activity extends AppCompatActivity {
         super.onResume();
         registerReceiver(updateUIReciver, filter);
         invalidateCart();
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
     }
 
     @Override

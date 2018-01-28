@@ -24,12 +24,14 @@ import java.util.List;
 public class NotificationList extends AppCompatActivity {
 
 
-
     TextView textlabel, picturelabel;
     ViewPager mMainPager;
     private PagerViewAdapter mPagerViewdapter;
     BroadcastReceiver updateUIReciver;
     IntentFilter filter;
+    NotificationDatabase nd;
+    notificationDao dao;
+    Integer imagecount;
 
 
     @SuppressLint("StaticFieldLeak")
@@ -41,6 +43,8 @@ public class NotificationList extends AppCompatActivity {
         textlabel = findViewById(R.id.textlabel);
         picturelabel = findViewById(R.id.picturelabel);
         mMainPager = findViewById(R.id.mainPager);
+        nd = NotificationDatabase.getInstance(this);
+        dao = nd.notificationDao();
         filter = new IntentFilter();
 
         filter.addAction("com.hello.action");
@@ -53,9 +57,35 @@ public class NotificationList extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
+                notificationCount();
             }
         };
+        notificationCount();
         viewpager();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void notificationCount() {
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... voids) {
+                imagecount = dao.getimageCount();
+                return dao.gettextCount();
+            }
+
+            @Override
+            protected void onPostExecute(Integer count) {
+                if (count == 0)
+                    textlabel.setText("Text Notification");
+                else
+                    textlabel.setText("Text Notification (" + count + ")");
+                if (imagecount == 0)
+                    picturelabel.setText("Picture Notification");
+                else
+                    picturelabel.setText("Picture Notification (" + imagecount + ")");
+
+            }
+        }.execute();
     }
 
     private void viewpager() {
@@ -127,6 +157,7 @@ public class NotificationList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(updateUIReciver, filter);
+        notificationCount();
 
     }
 

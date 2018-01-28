@@ -29,8 +29,8 @@ public class TextFragment extends Fragment {
     RecyclerView mNotificationList;
     NotificationAdapter mNotificationAdapter;
     List<Messages> mList = new ArrayList<>();
-    BroadcastReceiver updateUIReciver;
-    IntentFilter filter;
+    notificationDao dao;
+    NotificationDatabase nd;
 
 
     public TextFragment() {
@@ -48,21 +48,10 @@ public class TextFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mNotificationList.setLayoutManager(linearLayoutManager);
         mNotificationList.setHasFixedSize(true);
-        filter = new IntentFilter();
-
-        filter.addAction("com.hello.action");
-
-        updateUIReciver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mNotificationAdapter.notifyDataSetChanged();
-            }
-        };
 
 
-        NotificationDatabase nd = NotificationDatabase.getInstance(getContext());
-        final notificationDao dao = nd.notificationDao();
+        nd = NotificationDatabase.getInstance(getContext());
+        dao = nd.notificationDao();
         new AsyncTask<Void, Void, List<Messages>>() {
 
 
@@ -106,4 +95,26 @@ public class TextFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void onResume() {
+        super.onResume();
+        new AsyncTask<Void, Void, List<Messages>>() {
+
+
+            @Override
+            protected List<Messages> doInBackground(Void... voids) {
+                return dao.getAlltextNotification();
+            }
+
+            @Override
+            protected void onPostExecute(List<Messages> messages) {
+                mList.clear();
+                mList.addAll(messages);
+                mNotificationAdapter.setData(messages);
+                mNotificationAdapter.notifyDataSetChanged();
+
+            }
+        }.execute();
+    }
 }
